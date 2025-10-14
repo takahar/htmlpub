@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Outlook Add-in Sample</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+  <script>
+    Office.onReady(() => {
+      // Outlook アドインが読み込まれた後の初期化処理
+      if (Office.context.mailbox) {
+        // 必要に応じてアイテム情報などを取得・操作可能
+        console.log("Outlook Add-in ready");
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>Outlook Add-in画面サンプル</h1>
+  <p>ここにアドインのUIや機能を実装します。</p>
+</body>
+</html>

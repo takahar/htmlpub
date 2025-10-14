@@ -1,0 +1,43 @@
+<script>
+Office.initialize = function () {
+  // 送信前イベント登録
+  Office.context.mailbox.item.addHandlerAsync(
+    Office.EventType.ItemSend,
+    onMessageSend);
+};
+
+function onMessageSend(eventArgs) {
+  const item = Office.context.mailbox.item;
+
+  // 全受信者の一覧取得
+  const recipients = [].concat(
+    item.to || [],
+    item.cc || [],
+    item.bcc || []);
+
+  // 外部ドメインチェック（例：自社ドメインが "example.com" ）
+  const internalDomain = "example.com";
+  const externals = recipients.filter(r =>
+    !r.emailAddress.toLowerCase().endsWith("@" + internalDomain));
+
+  if (externals.length > 0) {
+    // 外部宛先アラート用ダイアログを表示
+    Office.context.ui.displayDialogAsync('https://takahar.github.io/htmlpub/olcheck/send_confirm.html',
+      { height: 30, width: 20 }, function (asyncResult) {
+        const dialog = asyncResult.value;
+        dialog.addEventHandler(Office.EventType.DialogMessageReceived, function (arg) {
+          if (arg.message === "confirmed") {
+            dialog.close();
+            eventArgs.completed({ allowEvent: true });  // 送信続行
+          } else {
+            dialog.close();
+            eventArgs.completed({ allowEvent: false }); // 送信中止
+          }
+        });
+      });
+  } else {
+    // 外部宛先なし → そのまま送信
+    eventArgs.completed({ allowEvent: true });
+  }
+}
+</script>

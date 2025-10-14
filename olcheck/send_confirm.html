@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>送信確認</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+  </style>
+  <script>
+    // Office.jsが読み込まれた後の初期化処理
+    Office.initialize = function () {
+      // nothing to initialize here for now
+    };
+
+    // 親ウィンドウにメッセージを送信してダイアログを閉じる
+    function confirmSend() {
+      Office.context.ui.messageParent("confirmed");
+    }
+
+    function cancelSend() {
+      Office.context.ui.messageParent("cancelled");
+    }
+  </script>
+</head>
+<body>
+  <h2>外部宛先があります。送信を続けますか？</h2>
+  <button onclick="confirmSend()">はい</button>
+  <button onclick="cancelSend()">いいえ</button>
+</body>
+</html>
